@@ -12,7 +12,6 @@ body{
  overflow:hidden;
 }
 
-/* BACKGROUND */
 .bg-text{
  position:fixed;
  font-size:120px;
@@ -33,7 +32,6 @@ body{
  top:200px;right:40px
 }
 
-/* CARD */
 .card{
  position:relative;z-index:1;
  width:360px;
@@ -87,18 +85,22 @@ button{
 
 <script>
 function loginStudent(){
- let students = JSON.parse(localStorage.getItem("students")) || [];
+    const emailInput = document.getElementById("email").value.trim();
+    const passInput = document.getElementById("pass").value.trim();
+    const msgDiv = document.getElementById("msg");
 
- let valid = students.find(
-  s => s.email===email.value && s.pass===pass.value
- );
+    
+    let students = JSON.parse(localStorage.getItem("students")) || [];
 
- if(valid){
-  // future home page
-  window.location.href = "student_home.html";
- }else{
-  msg.textContent = "Invalid Email or Password";
- }
+    
+    let validStudent = students.find(s => s.email === emailInput && s.pass === passInput);
+
+    if(validStudent){
+   
+        window.location.href = "student_dashboard.html";
+    } else {
+        msgDiv.textContent = "Invalid Email or Password";
+    }
 }
 </script>
 
