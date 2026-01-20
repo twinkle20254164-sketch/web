@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse Point - Student Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
+body, html { height:100%; background:#fff; position:relative; overflow-x:hidden; }
+
+/* Header */
+header {
+    width:100%; height:250px; position:relative; display:flex; align-items:center; padding:10px 20px; background:#000;
+}
+header img.logo { height:60px; margin-right:20px; z-index:2; }
+header .campus-img { position:absolute; top:0; left:0; width:100%; height:250px; object-fit:cover; z-index:1; opacity:0.8; }
+header h1 { color:white; font-size:28px; font-weight:700; z-index:2; margin-left:80px; }
+
+/* Profile */
+.profile { position:absolute; top:20px; right:30px; display:flex; align-items:center; gap:10px; cursor:pointer; z-index:2; }
+.profile img { height:40px; width:40px; border-radius:50%; border:2px solid #fff; }
+.profile-details { display:none; position:absolute; top:50px; right:0; background:white; padding:15px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.2); min-width:200px; z-index:3; }
+.profile-details p { margin:5px 0; color:#333; }
+
+/* Background shapes */
+.shape { position:absolute; opacity:0.1; z-index:0; }
+.shape.circle { width:180px; height:180px; border-radius:50%; background:#a3d2ca; top:5%; left:10%; }
+.shape.triangle { width:0; height:0; border-left:90px solid transparent; border-right:90px solid transparent; border-bottom:160px solid #f7d6bf; top:20%; right:15%; }
+.shape.square { width:160px; height:160px; background:#ffb4a2; bottom:10%; left:20%; }
+
+.background-text {
+    position:absolute; top:50%; left:50%; font-size:120px; font-weight:900;
+    color:rgba(200,200,200,0.12); transform:translate(-50%,-50%) rotate(-15deg);
+    pointer-events:none; user-select:none; z-index:0;
+}
+
+/* Dashboard container */
+.dashboard { max-width:1200px; margin:20px auto; padding:20px; z-index:10; position:relative; }
+
+/* Cards for features */
+.cards-container { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+.card {
+    background:white; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    padding:30px; cursor:pointer; transition:0.3s; flex:1 1 250px;
+}
+.card:hover { transform:translateY(-5px); box-shadow:0 15px 30px rgba(0,0,0,0.15); }
+.card i { font-size:40px; color:#4a90e2; margin-bottom:15px; }
+.card h2 { font-size:24px; margin-bottom:10px; color:#333; }
+.card p { font-size:16px; color:#555; }
+
+#content { margin-top:30px; }
+textarea, select, input { width:100%; padding:10px; margin:8px 0; border-radius:8px; border:1px solid #ccc; }
+button { padding:10px 20px; border:none; border-radius:8px; background:#4a90e2; color:white; font-size:16px; cursor:pointer; margin-top:10px; }
+.problem-item { border:1px solid #ccc; padding:15px; border-radius:10px; margin-bottom:10px; background:#f4f4f4; position:relative; }
+.vote-btn { position:absolute; right:15px; top:15px; cursor:pointer; color:green; }
+</style>
+</head>
+<body>
+
+<div class="shape circle"></div>
+<div class="shape triangle"></div>
+<div class="shape square"></div>
+<div class="background-text">PULSE POINT</div>
+
+<header>
+    <img src="images/campus.jpg" alt="Campus" class="campus-img">
+    <img src="images/MNIT-office-logo.png" alt="MNIT Logo" class="logo">
+    <div class="profile" onclick="toggleProfile()">
+        <img src="images/profile_icon.png" alt="Profile Icon">
+        <span id="studentName">Student Name</span>
+        <div class="profile-details" id="profileDetails">
+            <p><strong>Full Name:</strong> <span id="fullName">Student Full Name</span></p>
+            <p><strong>Email:</strong> <span id="emailProfile">student@example.com</span></p>
+        </div>
+    </div>
+</header>
+
+<div class="dashboard">
+    <div class="cards-container">
+        <div class="card" onclick="showPage('submit')">
+            <i class="fas fa-upload"></i>
+            <h2>Submit Problem</h2>
+            <p>Submit any problem anonymously or with details.</p>
+        </div>
+
+        <div class="card" onclick="showPage('view')">
+            <i class="fas fa-eye"></i>
+            <h2>View Submitted Problems</h2>
+            <p>See all problems submitted by students.</p>
+        </div>
+
+        <div class="card" onclick="showPage('voting')">
+            <i class="fas fa-thumbs-up"></i>
+            <h2>Voting</h2>
+            <p>Vote for important problems submitted by students.</p>
+        </div>
+
+        <div class="card" onclick="window.location.href='about.html'">
+            <i class="fas fa-info-circle"></i>
+            <h2>About</h2>
+            <p>Learn more about Pulse Point and how it works.</p>
+        </div>
+    </div>
+
+    <div id="content">
+        <p>Select a feature above to see details here...</p>
+    </div>
+</div>
+
+<script>
+let problems = JSON.parse(localStorage.getItem("problems")) || [];
+window.onload = function(){
+    let students = JSON.parse(localStorage.getItem("students")) || [];
+    if(students.length>0){
+        let current = students[students.length-1]; // last registered student
+        document.getElementById('studentName').textContent = current.fullName;
+        document.getElementById('fullName').textContent = current.fullName;
+        document.getElementById('emailProfile').textContent = current.email;
+    }
+}
+function toggleProfile(){
+    let details = document.getElementById('profileDetails');
+    details.style.display = (details.style.display==='block') ? 'none' : 'block';
+}
+function showPage(page){
+    let content = document.getElementById('content');
+    if(page==='submit'){
+        content.innerHTML = `
+        <h2>Submit Problem</h2>
+        <select id="category">
+            <option value="">Select Category</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Infrastructure">Infrastructure</option>
+            <option value="Academics">Academics</option>
+            <option value="Others">Others</option>
+        </select>
+        <input id="title" placeholder="Problem Title">
+        <textarea id="desc" placeholder="Problem Description"></textarea>
+        <button onclick="saveProblem()">Save</button>
+        <div id="msg"></div>
+        `;
+    } else if(page==='view'){
+        renderProblems();
+    } else if(page==='voting'){
+        renderVoting();
+    }
+}
+
+// save problem
+function saveProblem(){
+    let category = document.getElementById('category').value;
+    let title = document.getElementById('title').value.trim();
+    let desc = document.getElementById('desc').value.trim();
+    let msg = document.getElementById('msg');
+
+    if(!category || !title || !desc){
+        msg.style.color='red';
+        msg.textContent = "All fields are required!";
+        return;
+    }
+
+    problems.push({category,title,desc,votes:0});
+    localStorage.setItem("problems", JSON.stringify(problems));
+
+    msg.style.color='green';
+    msg.textContent = "Problem submitted successfully!";
+    document.getElementById('title').value="";
+    document.getElementById('desc').value="";
+    document.getElementById('category').value="";
+}
+
+function renderProblems(){
+    let content = document.getElementById('content');
+    if(problems.length===0){
+        content.innerHTML = "<p>No problems submitted yet.</p>";
+        return;
+    }
+    content.innerHTML = "<h2>Submitted Problems</h2>";
+    problems.forEach((p,i)=>{
+        let div = document.createElement('div');
+        div.className="problem-item";
+        div.innerHTML = `<strong>${p.category}</strong> - ${p.title}<br>${p.desc}`;
+        content.appendChild(div);
+    });
+}
+
+function renderVoting(){
+    let content = document.getElementById('content');
+    if(problems.length===0){
+        content.innerHTML = "<p>No problems to vote.</p>";
+        return;
+    }
+    content.innerHTML = "<h2>Vote for Problems</h2>";
+    problems.forEach((p,i)=>{
+        let div = document.createElement('div');
+        div.className="problem-item";
+        div.innerHTML = `<strong>${p.category}</strong> - ${p.title}<br>${p.desc}
+        <i class="fas fa-thumbs-up vote-btn" onclick="vote(${i})"></i> <span id="vote-${i}">${p.votes}</span>`;
+        content.appendChild(div);
+    });
+}
+function vote(idx){
+    problems[idx].votes++;
+    localStorage.setItem("problems", JSON.stringify(problems));
+    document.getElementById(`vote-${idx}`).textContent = problems[idx].votes;
+}
+</script>
+
+</body>
+</html>
