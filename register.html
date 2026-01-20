@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pulse Point - Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif; }
+
+        body, html {
+            height: 100%;
+            background: linear-gradient(135deg, #f0f4f8, #e8f0f7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background shapes */
+        .shape { position:absolute; opacity:0.15; z-index:1; }
+        .circle { width:200px; height:200px; border-radius:50%; background:#a3d2ca; top:5%; left:10%; }
+        .triangle { width:0; height:0; border-left:100px solid transparent; border-right:100px solid transparent; border-bottom:180px solid #f7d6bf; top:15%; right:10%; }
+        .square { width:170px; height:170px; background:#ffb4a2; bottom:10%; left:25%; }
+
+        /* Pulse Point Text */
+        .background-text { 
+            position:absolute; top:50%; left:50%; font-size:120px; color:rgba(200,200,200,0.12); font-weight:900; 
+            transform:translate(-50%,-50%) rotate(-15deg); pointer-events:none; user-select:none;
+        }
+        .overlay-text { position:absolute; font-size:60px; font-weight:900; color:rgba(180,180,180,0.1); top:15%; left:20%; transform:rotate(-20deg); pointer-events:none; }
+        .overlay-text2 { position:absolute; font-size:50px; font-weight:900; color:rgba(180,180,180,0.08); bottom:10%; right:15%; transform:rotate(10deg); pointer-events:none; }
+
+        /* Container */
+        .register-container {
+            position: relative;
+            max-width:400px;
+            margin:80px auto;
+            background:white;
+            border-radius:15px;
+            padding:50px 30px;
+            box-shadow:0 15px 30px rgba(0,0,0,0.12);
+            text-align:center;
+            z-index:10;
+        }
+
+        .register-container h2 { margin-bottom:30px; font-size:28px; color:#333; }
+
+        /* Buttons */
+        .register-btn {
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:12px;
+            width:100%;
+            padding:16px 0;
+            margin:15px 0;
+            border-radius:10px;
+            border:none;
+            font-size:18px;
+            cursor:pointer;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .register-btn.student { background:#4a90e2; color:white; }
+        .register-btn.student:hover { background:#357ABD; }
+
+        .register-btn.admin { background:#50C878; color:white; }
+        .register-btn.admin:hover { background:#3EA764; }
+
+        /* Back link */
+        .back-login { margin-top:20px; font-size:15px; }
+        .back-login a { color:#1a73e8; font-weight:500; text-decoration:none; }
+        .back-login a:hover { text-decoration:underline; }
+
+        /* Extra icons */
+        .icon-left, .icon-right {
+            position:absolute; font-size:40px; opacity:0.1;
+        }
+        .icon-left { top:8%; left:5%; transform:rotate(-10deg); }
+        .icon-right { bottom:12%; right:5%; transform:rotate(15deg); }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background shapes -->
+    <div class="shape circle"></div>
+    <div class="shape triangle"></div>
+    <div class="shape square"></div>
+
+    <!-- Pulse Point text -->
+    <div class="background-text">PULSE POINT</div>
+    <div class="overlay-text">PULSE</div>
+    <div class="overlay-text2">POINT</div>
+
+    <!-- Decorative icons -->
+    <i class="fas fa-star icon-left"></i>
+    <i class="fas fa-circle icon-right"></i>
+
+    <!-- Register Form -->
+    <div class="register-container">
+        <h2>Register</h2>
+
+        <button class="register-btn student" onclick="window.location.href='student_register.html'">
+            <i class="fas fa-user-graduate"></i> Student Registration
+        </button>
+
+        <button class="register-btn admin" onclick="window.location.href='admin_register.html'">
+            <i class="fas fa-user-shield"></i> Admin Registration
+        </button>
+
+        <div class="back-login">
+            <p>Back to <a href="login.html">Login</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
